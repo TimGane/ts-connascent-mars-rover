@@ -1,13 +1,13 @@
-type Direction = 'north' | 'south' | 'east' | 'west'
+import { Direction } from "../../../main/model/Direction";
 
 export class GeoLocation {
     private x: number
     private y: number
     private direction: Direction
 
-    constructor(xCoord: number, yCoord: number, direction: Direction) {
-        this.x = xCoord
-        this.y = yCoord
+    constructor(x: number, y: number, direction: Direction) {
+        this.x = x
+        this.y = y
         this.direction = direction
     }
 }

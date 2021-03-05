@@ -7,7 +7,6 @@ enum Directions {
     WEST = 3
 }
 
-
 interface DirectionMapping {
     current: Directions;
     left: Directions;

@@ -7,6 +7,7 @@ import {MarsRoverSender} from "../main/infrastructure/spacecomm/MarsRoverSender"
 import {MarsRoverController} from "../main/infrastructure/MarsRoverController";
 import {ServiceBus} from "../main/infrastructure/bus/ServiceBus";
 import { GeoLocation } from "../main/infrastructure/spacecomm/GeoLocation";
+import { Direction } from "../main/model/Direction";
 
 describe('Connascent MarsRover Acceptance Tests', () => {
 
@@ -31,7 +32,7 @@ describe('Connascent MarsRover Acceptance Tests', () => {
             marsRoverReceiver.received(pack);
         }
 
-        const geo = new GeoLocation(1, 7, 'north');
+        const geo = new GeoLocation(1, 7, Direction.NORTH());
 
         expect(nasaAntenna.received).toBeCalledWith(geo);
     });
@@ -42,7 +43,7 @@ describe('Connascent MarsRover Acceptance Tests', () => {
             marsRoverReceiver.received(pack);
         }
 
-        const geo = new GeoLocation(1, 7, 'north');
+        const geo = new GeoLocation(1, 7, Direction.NORTH());
 
         expect(nasaAntenna.received).toBeCalledWith(geo);
     });

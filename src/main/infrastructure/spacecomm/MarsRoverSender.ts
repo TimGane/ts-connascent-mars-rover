@@ -2,22 +2,9 @@ import {ISendNotifications} from "../ISendNotifications";
 import {ISendFinalStateBus} from "../bus/ISendFinalStateBus";
 import {INasaAntenna} from "./INasaAntenna";
 import {GeoLocation} from "./GeoLocation";
+import { Direction } from "../../model/Direction";
 
-type DirectionSymbols = 'N' | 'E' | 'W' | 'S'
-
-enum Direction {
-    north = 'north',
-    south = 'south',
-    east = 'east',
-    west = 'west'
-}
-
-enum DirectionSymbol {
-    'N' = 'north',
-    'S' = 'south',
-    'E' = 'east',
-    'W' = 'west'
-}
+const directionIndexes = ['N', 'E', 'S', 'W'];
 
 export class MarsRoverSender implements ISendNotifications {
 
@@ -38,8 +25,7 @@ export class MarsRoverSender implements ISendNotifications {
     }
 
     mapDirection(letterDirection: string): Direction {
-        const direction = DirectionSymbol[letterDirection as DirectionSymbols];
-        return Direction[direction];
+        return Direction.valueOf(directionIndexes.indexOf(letterDirection));
     }
 
     sendError(): void {
