@@ -1,41 +1,56 @@
 import {format} from "util";
 
-enum DirectionEnum {
+enum Directions {
     NORTH = 0,
     EAST = 1,
     SOUTH = 2,
     WEST = 3
 }
+
+
+interface DirectionMapping {
+    current: Directions;
+    left: Directions;
+    right: Directions;
+}
+
+const northDirectionMapping = { current: Directions.NORTH, left: Directions.WEST, right: Directions.EAST };
+const eastDirectionMapping = { current: Directions.EAST, left: Directions.NORTH, right: Directions.SOUTH };
+const southDirectionMapping = { current: Directions.SOUTH, left: Directions.EAST, right: Directions.WEST };
+const westDirectionMapping = { current: Directions.WEST, left: Directions.SOUTH, right: Directions.NORTH };
+const directionsMappings = [northDirectionMapping, eastDirectionMapping, southDirectionMapping, westDirectionMapping];
+
 export class Direction {
 
-    private value: DirectionEnum;
+    private value: Directions;
+
     private static map: Map<any, any> = new Map<any, any>([
-        [0, new Direction(DirectionEnum.NORTH)],
-        [1, new Direction(DirectionEnum.EAST)],
-        [2, new Direction(DirectionEnum.SOUTH)],
-        [3, new Direction(DirectionEnum.WEST)]
+        [0, new Direction(Directions.NORTH)],
+        [1, new Direction(Directions.EAST)],
+        [2, new Direction(Directions.SOUTH)],
+        [3, new Direction(Directions.WEST)]
     ])
 
-    constructor(value: DirectionEnum) {
+    constructor(value: Directions) {
         this.value = value;
     }
 
     enumValue(): string {
-        return DirectionEnum[this.value];
+        return Directions[this.value];
     }
 
-    static valueOf(directionValue: DirectionEnum): Direction {
+    static valueOf(directionValue: Directions): Direction {
         return this.map.get(directionValue);
     }
 
     turnLeft(): Direction {
-        let previousValue: number = this.value - 1;
-        return Direction.valueOf((previousValue % 4 + 4) % 4);
+        const directionMapping = directionsMappings.find(mapping => mapping.current === this.value) as DirectionMapping;
+        return new Direction(directionMapping.left);
     }
 
     turnRight(): Direction {
-        let previousValue = this.value + 1;
-        return Direction.valueOf((previousValue % 4 + 4) % 4);
+        const directionMapping = directionsMappings.find(mapping => mapping.current === this.value) as DirectionMapping;
+        return new Direction(directionMapping.right);
     }
 
     toString(): string {
@@ -43,18 +58,18 @@ export class Direction {
     }
 
     static NORTH(): Direction {
-        return Direction.valueOf(DirectionEnum.NORTH);
+        return Direction.valueOf(Directions.NORTH);
     }
 
     static EAST(): Direction {
-        return Direction.valueOf(DirectionEnum.EAST);
+        return Direction.valueOf(Directions.EAST);
     }
 
     static SOUTH(): Direction {
-        return Direction.valueOf(DirectionEnum.SOUTH);
+        return Direction.valueOf(Directions.SOUTH);
     }
 
     static WEST(): Direction {
-        return Direction.valueOf(DirectionEnum.WEST);
+        return Direction.valueOf(Directions.WEST);
     }
 }
