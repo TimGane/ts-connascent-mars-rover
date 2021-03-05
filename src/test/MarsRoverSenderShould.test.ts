@@ -1,6 +1,7 @@
 import {INasaAntenna} from "../main/infrastructure/spacecomm/INasaAntenna";
 import {MarsRoverSender} from "../main/infrastructure/spacecomm/MarsRoverSender";
 import {mock} from "jest-mock-extended";
+import { GeoLocation } from "../main/infrastructure/spacecomm/GeoLocation";
 
 describe('Test: MarsRoverSender', () => {
     it('should send message correctly', () => {
@@ -9,7 +10,8 @@ describe('Test: MarsRoverSender', () => {
 
         marsRoverSender.send("6 99 S");
 
-        expect(nasaAntenna.received).toBeCalledWith(["X6", "Y99", "DS"])
+        const geoLocation = new GeoLocation(6, 99, 'south')
+        expect(nasaAntenna.received).toBeCalledWith(geoLocation)
     });
 
     it('should send error message', () => {
@@ -18,6 +20,6 @@ describe('Test: MarsRoverSender', () => {
 
         marsRoverSender.sendError();
 
-        expect(nasaAntenna.received).toBeCalledWith(["ER"])
+        expect(nasaAntenna.notifyError).toBeCalled()
     });
 })

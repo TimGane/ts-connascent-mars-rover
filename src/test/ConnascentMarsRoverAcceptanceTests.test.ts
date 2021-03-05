@@ -6,6 +6,7 @@ import {mock} from "jest-mock-extended";
 import {MarsRoverSender} from "../main/infrastructure/spacecomm/MarsRoverSender";
 import {MarsRoverController} from "../main/infrastructure/MarsRoverController";
 import {ServiceBus} from "../main/infrastructure/bus/ServiceBus";
+import { GeoLocation } from "../main/infrastructure/spacecomm/GeoLocation";
 
 describe('Connascent MarsRover Acceptance Tests', () => {
 
@@ -30,7 +31,9 @@ describe('Connascent MarsRover Acceptance Tests', () => {
             marsRoverReceiver.received(pack);
         }
 
-        expect(nasaAntenna.received).toBeCalledWith(["X1", "Y7", "DN"]);
+        const geo = new GeoLocation(1, 7, 'north');
+
+        expect(nasaAntenna.received).toBeCalledWith(geo);
     });
 
     it("move following commands any order", () => {
@@ -39,7 +42,9 @@ describe('Connascent MarsRover Acceptance Tests', () => {
             marsRoverReceiver.received(pack);
         }
 
-        expect(nasaAntenna.received).toBeCalledWith(["X1", "Y7", "DN"]);
+        const geo = new GeoLocation(1, 7, 'north');
+
+        expect(nasaAntenna.received).toBeCalledWith(geo);
     });
 
     it("move following commands incomplete", async () => {
@@ -48,6 +53,6 @@ describe('Connascent MarsRover Acceptance Tests', () => {
             marsRoverReceiver.received(pack);
         }
         await new Promise( r => setTimeout(r, 3100));
-        expect(nasaAntenna.received).toBeCalledWith(["ER"])
+        expect(nasaAntenna.notifyError).toBeCalled()
     })
 })
