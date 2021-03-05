@@ -24,13 +24,6 @@ export class Direction {
 
     private value: Directions;
 
-    private static map: Map<any, any> = new Map<any, any>([
-        [0, new Direction(Directions.NORTH)],
-        [1, new Direction(Directions.EAST)],
-        [2, new Direction(Directions.SOUTH)],
-        [3, new Direction(Directions.WEST)]
-    ])
-
     constructor(value: Directions) {
         this.value = value;
     }
@@ -40,7 +33,8 @@ export class Direction {
     }
 
     static valueOf(directionValue: Directions): Direction {
-        return this.map.get(directionValue);
+        const direction = directionsMappings.find(mapping => mapping.current === directionValue) as DirectionMapping;
+        return new Direction(direction.current);
     }
 
     turnLeft(): Direction {
