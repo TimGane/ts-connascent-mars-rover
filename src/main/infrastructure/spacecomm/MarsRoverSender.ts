@@ -2,15 +2,19 @@ import {ISendNotifications} from "../ISendNotifications";
 import {ISendFinalStateBus} from "../bus/ISendFinalStateBus";
 import {INasaAntenna} from "./INasaAntenna";
 import {GeoLocation} from "./GeoLocation";
-import { Position } from "../../model/Position";
-import { exception } from "console";
 
-type Direction = 'north' | 'south' | 'east' | 'west'
-type BareDirection = 'N' | 'E' | 'W' | 'S'
+type DirectionSymbols = 'N' | 'E' | 'W' | 'S'
+
+enum Direction {
+    north = 'north',
+    south = 'south',
+    east = 'east',
+    west = 'west'
+}
 
 enum DirectionSymbol {
-    'S' = 'south',
     'N' = 'north',
+    'S' = 'south',
     'E' = 'east',
     'W' = 'west'
 }
@@ -29,18 +33,13 @@ export class MarsRoverSender implements ISendNotifications {
     }
 
     send(message: string): void {
-        let messageParts: string[] = message.split(" ");
-        this.nasaAntenna.received(new GeoLocation(parseInt(messageParts[0]), parseInt(messageParts[1]), this.mapDirection(messageParts[2])));
-        // this.nasaAntenna.received([
-        //     "X" + messageParts[0],
-        //     "Y" + messageParts[1],
-        //     "D" + messageParts[2]
-        // ])
+        const [x, y, direction] = message.split(" ");
+        this.nasaAntenna.received(new GeoLocation(parseInt(x), parseInt(y), this.mapDirection(direction)));
     }
 
-    mapDirection(letterDirection: string) : Direction
-    {
-        return DirectionSymbol[letterDirection as BareDirection] as Direction
+    mapDirection(letterDirection: string): Direction {
+        const direction = DirectionSymbol[letterDirection as DirectionSymbols];
+        return Direction[direction];
     }
 
     sendError(): void {

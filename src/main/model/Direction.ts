@@ -8,16 +8,15 @@ enum DirectionEnum {
 }
 export class Direction {
 
-    private value: number;
+    private value: DirectionEnum;
     private static map: Map<any, any> = new Map<any, any>([
-        [0, new Direction(0)],
-        [1, new Direction(1)],
-        [2, new Direction(2)],
-        [3, new Direction(3)]
+        [0, new Direction(DirectionEnum.NORTH)],
+        [1, new Direction(DirectionEnum.EAST)],
+        [2, new Direction(DirectionEnum.SOUTH)],
+        [3, new Direction(DirectionEnum.WEST)]
     ])
 
-
-    constructor(value: number) {
+    constructor(value: DirectionEnum) {
         this.value = value;
     }
 
@@ -25,7 +24,7 @@ export class Direction {
         return DirectionEnum[this.value];
     }
 
-    static valueOf(directionValue: number): Direction {
+    static valueOf(directionValue: DirectionEnum): Direction {
         return this.map.get(directionValue);
     }
 
